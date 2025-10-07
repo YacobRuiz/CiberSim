@@ -1,48 +1,52 @@
 import java.util.*;
+import java.util.Arrays;
 
 public class Host {
-    //preparando para las deciciones al azar
+    private static HashSet<Integer> ips = new HashSet<>();;
     Random azar = new Random();
-    //lista de puertos activos
-    List<Integer> puertos = new ArrayList<>();
+    LinkedList<Integer> puertos;
+    boolean estado;
+    int IP;
+
+    public Host(int ipRecibida){
+        //creacion de lista de puertos
+        this.puertos = new LinkedList<Integer>();
+        //definiendo el estado del host
+        int activoInactvo = azar.nextInt(2);
+        if (activoInactvo == 1) {
+            this.estado = true;
+        }
+        else{
+            this.estado = false;
+        }
+        
+        this.IP = ipRecibida;
+
+        //creacion de puertos y sus estados
+        int cantidadPuertosAbiertos = azar.nextInt(5) + 1;
+        for (int j = 0; j < cantidadPuertosAbiertos; j++){
+            int puertosAbiertos = this.azar.nextInt(100) + 1;
+            this.puertos.add(puertosAbiertos);
+        }
+    }
 
     public Integer direccionIP(){
-        //creando la direccion IP
-        int aleatorio = azar.nextInt(21);
-        int IP = 1926280 + aleatorio;
-        System.out.println(IP);
         return IP;
     }
 
-    //Creando la cantidad y que puertos estan activos
-    public List<Integer> Puertos(){
-        int cantidadPuertosAbiertos = azar.nextInt(5) + 1;
-        for (int j = 0; j < cantidadPuertosAbiertos; j++){
-            int puertosAbiertos = azar.nextInt(100) + 1;
-            puertos.add(puertosAbiertos);
-        }
-        System.out.println(puertos);
-        return puertos;
+    public LinkedList<Integer> getPuertos(){
+        return this.puertos;
     }
 
-    //Decidiendo si la maquina o IP esta activa
-    public Boolean ActivoInactivo(){
-       int activoInactvo = azar.nextInt(2);
-       if (activoInactvo == 1) {
-            System.out.println("true");
-            return true;
-       }
-       else{
-        System.out.println("false");
-        return false;
-       }
+    public Boolean getEstado(){
+        return this.estado;
     }
 
-    public static void main(String[] args){
-        Host pruebaHost = new Host();
-        pruebaHost.direccionIP();
-        pruebaHost.Puertos();
-        pruebaHost.ActivoInactivo();
+    @Override
+    public String toString(){
+        String resultado;
+        resultado = "[" + direccionIP() + ", " +  getPuertos() + ", " + getEstado() + "]";
+        return resultado;
     }
 }
     

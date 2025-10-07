@@ -1,22 +1,42 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class NetworkScanner {
-    public List<Host> Scann(){
-        Network redes = new Network();
-        List<Host> enLinea = new ArrayList<>();
+    Network redes;
 
-        for (int i = 0; i < redes.Hosts().length; i++){
-            if (redes(i).Host().ActivoInactivo() == true) {
-                enLinea.add(redes(i));
-            }
-        }
-
-        System.out.println(enLinea);
+    public NetworkScanner(){
+        this.redes = new Network();
     }
 
+    public Network scanAll(){
+        System.out.print("Todas las redes disponibles \n" + redes + "\n");
+        return this.redes;
+    }
+
+    public LinkedList<Host> scanActive(){
+        LinkedList<Host> redesActivas = new LinkedList<>();
+        List<Host> rNetworks = this.redes.getHosts();
+
+        for (Host hostActual : rNetworks){
+            if (hostActual.getEstado()){
+                redesActivas.add(hostActual);
+            }
+        }
+        System.out.print("Todas las redes acvtivas \n" + redesActivas+ "\n");
+        return redesActivas;
+    }
+
+    /*public int scanByIP(int ip){
+        for (int i = 0; i < 20; i++){
+            Host actual = redes.get(i);
+            if ()
+        }
+    }*/
+
     public static void main(String[] args) {
-        NetworkScanner pruebScanner = new NetworkScanner();
-        pruebScanner.Scann();
+        NetworkScanner pruebaNetworkScanner = new NetworkScanner();
+        pruebaNetworkScanner.scanActive();
+        pruebaNetworkScanner.scanAll();
     }
 }
