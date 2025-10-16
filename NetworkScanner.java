@@ -1,12 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 public class NetworkScanner {
     Network redes;
 
-    public NetworkScanner(){
-        this.redes = new Network();
+    public NetworkScanner(Network redes){
+        this.redes = redes;
     }
 
     public Network scanAll(){
@@ -27,16 +28,29 @@ public class NetworkScanner {
         return redesActivas;
     }
 
-    /*public int scanByIP(int ip){
-        for (int i = 0; i < 20; i++){
-            Host actual = redes.get(i);
-            if ()
-        }
-    }*/
+    public Host scanByIP(int ip) {
+        List<Host> todosLosHosts = this.redes.getHosts();
 
-    public static void main(String[] args) {
-        NetworkScanner pruebaNetworkScanner = new NetworkScanner();
-        pruebaNetworkScanner.scanActive();
-        pruebaNetworkScanner.scanAll();
+        for (Host hostActual : todosLosHosts) {
+            if (hostActual.direccionIP() == ip) {
+                System.out.println("Host encontrado: " + hostActual.toString());
+                return hostActual;
+            }
+    }
+        System.out.println("No se encontró ningún host con la IP: " + ip);
+        return null;
+    }
+
+    public LinkedList<Host> scanByPort(int puerto){
+        List<Host> todosLosHosts = this.redes.getHosts();
+        LinkedList<Host> hostsEncontrados = new LinkedList<>();
+        for (Host hostActual : todosLosHosts) {
+            if (hostActual.getPuertos().contains(puerto)) {
+                hostsEncontrados.add(hostActual);
+            }
+        }
+
+        System.out.println("Hosts encontrados: " + hostsEncontrados.toString());
+        return hostsEncontrados;
     }
 }
