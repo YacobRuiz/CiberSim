@@ -2,13 +2,14 @@ import java.util.*;
 import java.util.Arrays;
 
 public class Host {
-    private static HashSet<Integer> ips = new HashSet<>();;
+    private static HashSet<Integer> ips = new HashSet<>();
     Random azar = new Random();
     LinkedList<Integer> puertos;
     boolean estado;
     int IP;
+    private User usuario;
 
-    public Host(int ipRecibida){
+    public Host(int ipRecibida, User usuario){
         //creacion de lista de puertos
         this.puertos = new LinkedList<Integer>();
         //definiendo el estado del host
@@ -21,6 +22,7 @@ public class Host {
         }
         
         this.IP = ipRecibida;
+        this.usuario = usuario;
 
         //creacion de puertos y sus estados
         int cantidadPuertosAbiertos = azar.nextInt(5) + 1;
@@ -42,11 +44,14 @@ public class Host {
         return this.estado;
     }
 
+    public User getUser(){
+        return this.usuario;
+    }
+
     @Override
     public String toString(){
         String resultado;
-        resultado = "[" + direccionIP() + ", " +  getPuertos() + ", " + getEstado() + "]";
+        resultado = "[" + getUser() + ", " + direccionIP() + ", " +  getPuertos() + ", " + getEstado() + "]";
         return resultado;
     }
 }
-    
