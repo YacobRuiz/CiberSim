@@ -8,7 +8,7 @@ public class Cibersim {
         //haciendo el menu(todo bien basico xdd)
         while (true) {
             System.out.println("----Bienvenido a CiberSim----");
-            System.out.println("1: Escanear red");
+            System.out.println("1: Escaneo basico de red");
             System.out.println("2: Iniciar sesion");
             System.out.println("3: Instrucciones");
             System.out.println("4: Salir");
@@ -36,34 +36,9 @@ public class Cibersim {
     }
 
     public static void EscanearRed(Network laRed, Scanner scanner) {
-        while (true) {
-            System.out.println("--- Submenú de Escaneo ---");
-            System.out.println("1. Escanear todos los hosts.");
-            System.out.println("2. Escanear solo hosts activos.");
-            System.out.println("3. Buscar host por IP.");
-            System.out.println("4. Buscar host por puerto.");
-            System.out.println("5: Salir");
-            int opcionScan = scanner.nextInt();
-            scanner.nextLine();
-        
         NetworkScanner escaner = new NetworkScanner(laRed);
-        
-           if (opcionScan == 1) {
-                escaner.scanAll();
-            } else if (opcionScan == 2) {
-                escaner.scanActive();
-            } else if (opcionScan == 3) {
-                System.out.print("Introduce la IP a buscar: ");
-                int ipABuscar = scanner.nextInt();
-                escaner.scanByIP(ipABuscar);
-            } else if (opcionScan == 4){
-                System.out.print("Introduce la puerto a buscar: ");
-                int puertoABuscar = scanner.nextInt();
-                escaner.scanByPort(puertoABuscar);
-            } else{
-                break;
-            }
-        }
+        System.out.println("Escaneo basico de red...");
+        System.out.println(escaner.scanBasic()); 
     }
 
     public static void IniciarSesion(Network red, Scanner lectoor){
@@ -82,28 +57,72 @@ public class Cibersim {
             if (usuario.equals(usuarioActual.getUser()) &&
             contraseña.equals(usuarioActual.getPassword())) {
 
-            if (usuarioActual.isLocked()) {
-                System.out.println("Usuario bloqueado. Intente en "
-                    + usuarioActual.getRemainingLockSeconds() + " segundos.");
+                if (usuarioActual.isLocked()) {
+                    System.out.println("Usuario bloqueado. Intente en "
+                        + usuarioActual.getRemainingLockSeconds() + " segundos.");
+                    return;
+                }
+
+                usuarioActual.reinicioDeIntentosFallidos();
+                loginExitoso = true;
+                System.out.println("Inicio de sesión exitoso");
+                menuHosts(miRed, lector);
                 return;
-            }
-
-            usuarioActual.reinicioDeIntentosFallidos();
-            loginExitoso = true;
-
-            System.out.println("Inicio de sesión exitoso");
-            EscanearRed(miRed, lector);
-            return;
             }
         }
 
         if (!loginExitoso) {
             System.out.println("Usuario o contraseña incorrectos");
-
+            
         // opcional: aumentar intentos globales si quieres
+        } else {
+            
         }
 
 
+    }
+
+    public static void menuHosts(Network network, Scanner lector){
+        Scanner lectoor = lector;
+        Network miRed = network;
+        
+        while (true) {
+            System.out.println("Menu de usuario");
+            System.out.println("1: Escanear todos los hosts de la red");
+            System.out.println("2: Escanear hosts activos");
+            System.out.println("3: Escanear host por IP");
+            System.out.println("4: Escanear hosts por puerto");
+            System.out.println("5: Cerrar sesión");
+            int opcionUsuario = lectoor.nextInt();
+            lector.nextLine();
+
+            NetworkScanner escaner = new NetworkScanner(miRed);
+
+            switch (opcionUsuario) {
+                case 1:
+                    escaner.scanAll(); 
+                    break;
+                case 2:
+                    escaner.scanActive(); 
+                    break;
+                case 3:
+                    System.out.print("Introduce la IP a buscar: ");
+                    int ipABuscar = lectoor.nextInt();
+                    escaner.scanByIP(ipABuscar); 
+                    break;
+                case 4:
+                    System.out.print("Introduce el puerto a buscar: ");
+                    int puertoABuscar = lectoor.nextInt();
+                    escaner.scanByPort(puertoABuscar);
+                    break;
+                    case 5:
+                    System.out.println("Cerrando sesión...");
+                    return; 
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        }
     }
 
     public static void Instrucciones(){

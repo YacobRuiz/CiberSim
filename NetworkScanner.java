@@ -10,6 +10,18 @@ public class NetworkScanner {
         this.redes = redes;
     }
 
+    public String scanBasic(){
+        String usuariosIps = "";
+        int tamañno = this.redes.getHosts().size();
+        for (int i = 0; i < tamañno; i++){
+            String usuatioActual = this.redes.getHosts().get(i).getUser().getUser();
+            String ipActual = Integer.toString(this.redes.getHosts().get(i).direccionIP());
+            usuariosIps = usuariosIps + usuatioActual + " - " + ipActual + "\n";
+        }
+
+        return usuariosIps;
+    }
+
     public Network scanAll(){
         System.out.print("Todas las redes disponibles \n" + redes + "\n");
         return this.redes;
@@ -33,11 +45,11 @@ public class NetworkScanner {
 
         for (Host hostActual : todosLosHosts) {
             if (hostActual.direccionIP() == ip) {
-                System.out.println("Host encontrado: " + hostActual.toString());
+                System.out.println("Host encontrado: " + hostActual.toString() + "\n");
                 return hostActual;
             }
-    }
-        System.out.println("No se encontró ningún host con la IP: " + ip);
+        }
+        System.out.println("No se encontró ningún host con la IP: " + ip + "\n");
         return null;
     }
 

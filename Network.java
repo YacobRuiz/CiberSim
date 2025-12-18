@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Network {
     //creando el arreglo de listas
-    List<Host> hosts;
+    private List<Host> hosts;
     private int maxHost = 20;
     Random aleatorio;
 
